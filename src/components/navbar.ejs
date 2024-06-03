@@ -6,29 +6,99 @@
     <title>Navbar with SVG</title>
     <link href="../public/css/tailwind-output.css" rel="stylesheet" />
   </head>
-  <body class="bg-gray-100">
-    <nav class="shadow-sm w-full fixed top-0 left-0 z-50 bg-white px-[2rem]">
-      <div class="flex justify-between items-center px-4 py-2">
-        <div></div>
-        <div class="flex items-center">
-          <span class="text-sm font-semibold mr-2">Admin</span>
-          <svg
-            width="30"
-            height="30"
-            viewBox="0 0 80 80"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0 40C0 29.3913 4.21427 19.2172 11.7157 11.7157C19.2172 4.21427 29.3913 0 40 0C50.6087 0 60.7828 4.21427 68.2843 11.7157C75.7857 19.2172 80 29.3913 80 40C80 50.6087 75.7857 60.7828 68.2843 68.2843C60.7828 75.7857 50.6087 80 40 80C29.3913 80 19.2172 75.7857 11.7157 68.2843C4.21427 60.7828 0 50.6087 0 40ZM40 5.73758C33.359 5.73781 26.8612 7.66802 21.2971 11.2934C15.7329 14.9188 11.3423 20.083 8.65934 26.158C5.97637 32.2329 5.11669 38.9566 6.1849 45.5111C7.2531 52.0656 10.2031 58.1685 14.6761 63.0772C17.3917 58.8238 21.1355 55.3235 25.5617 52.8998C29.9879 50.4761 34.9537 49.2072 40 49.2103C45.0464 49.2066 50.0124 50.4753 54.4387 52.899C58.865 55.3228 62.6087 58.8234 65.3239 63.0772C69.7969 58.1685 72.7469 52.0656 73.8151 45.5111C74.8833 38.9566 74.0236 32.2329 71.3407 26.158C68.6577 20.083 64.2671 14.9188 58.7029 11.2934C53.1388 7.66802 46.641 5.73781 40 5.73758ZM61.0297 67.0512C58.8925 63.3678 55.8248 60.3108 52.1338 58.1865C48.4429 56.0623 44.2585 54.9455 40 54.9479C35.7415 54.9455 31.5571 56.0623 27.8662 58.1865C24.1752 60.3108 21.1075 63.3678 18.9703 67.0512C24.9782 71.7359 32.3815 74.2745 40 74.2624C47.9239 74.2624 55.2197 71.5688 61.0297 67.0512ZM25.807 33.9906C25.807 30.2264 27.3024 26.6164 29.9641 23.9547C32.6258 21.293 36.2358 19.7977 40 19.7977C43.7642 19.7977 47.3742 21.293 50.0359 23.9547C52.6976 26.6164 54.193 30.2264 54.193 33.9906C54.193 37.7548 52.6976 41.3649 50.0359 44.0266C47.3742 46.6883 43.7642 48.1836 40 48.1836C36.2358 48.1836 32.6258 46.6883 29.9641 44.0266C27.3024 41.3649 25.807 37.7548 25.807 33.9906ZM40 25.5353C38.8896 25.5353 37.7901 25.754 36.7643 26.1789C35.7384 26.6038 34.8063 27.2266 34.0211 28.0118C33.236 28.7969 32.6132 29.729 32.1882 30.7549C31.7633 31.7808 31.5446 32.8803 31.5446 33.9906C31.5446 35.101 31.7633 36.2005 32.1882 37.2264C32.6132 38.2522 33.236 39.1843 34.0211 39.9695C34.8063 40.7547 35.7384 41.3775 36.7643 41.8024C37.7901 42.2273 38.8896 42.446 40 42.446C42.2425 42.446 44.3932 41.5552 45.9789 39.9695C47.5645 38.3838 48.4554 36.2331 48.4554 33.9906C48.4554 31.7481 47.5645 29.5975 45.9789 28.0118C44.3932 26.4261 42.2425 25.5353 40 25.5353Z"
-              fill="black"
-              fill-opacity="0.65"
+  <body>
+    <div class="mx-auto">
+      <nav class="border-gray-200">
+        <div
+          class="container mx-auto flex flex-wrap items-center justify-between"
+        >
+          <a href="#" class="flex">
+            <img
+              src="../public/assets/Logos/loc.svg"
+              class="w-[51px] h-[70px] object-cover bg-transparent"
+              alt="logo"
             />
-          </svg>
+
+            <span class="self-center text-lg font-semibold whitespace-nowrap"
+              >Health Hub Loc</span
+            >
+          </a>
+          <button
+            data-collapse-toggle="mobile-menu"
+            type="button"
+            class="md:hidden ml-3 text-gray-400 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-lg inline-flex items-center justify-center"
+            aria-controls="mobile-menu-2"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <svg
+              class="hidden w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+          <div
+            class="flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300"
+            id="mobile-menu"
+          >
+            <ul
+              class="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium"
+            >
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-[#47C3A4] md:p-0"
+                  aria-current="page"
+                  >Pharmacie</a
+                >
+              </li>
+
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-[#47C3A4] md:p-0"
+                  >Cabinet</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-[#47C3A4] md:p-0"
+                  >Docteur</a
+                >
+              </li>
+              <!-- <li>
+                <a
+                  href="#"
+                  class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-[#47C3A4] md:p-0"
+                  >Contact</a
+                >
+              </li> -->
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
+
+    <script src="https://unpkg.com/@themesberg/flowbite@1.1.1/dist/flowbite.bundle.js"></script>
   </body>
 </html>

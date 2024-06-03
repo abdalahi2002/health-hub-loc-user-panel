@@ -23,4 +23,16 @@ router.get("/", (req, res) => {
   }
 });
 
+router.get("/pharmacie", (req, res) => {
+  try {
+    // Read components
+  
+
+    res.render("pharmacie", { title: "pharmacie" });
+  } catch (error) {
+    console.error("Error reading components:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

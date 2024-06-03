@@ -13,15 +13,34 @@ app.set("views", path.join(__dirname, "views"));
 // Serve static files from the "public" directory
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-// Your existing routes and middleware
-app.get("/", (req, res) => {
-  const navbarContent = fs.readFileSync(
-    path.join(__dirname, "/components/navbar.ejs"),
+// Helper function to read component files
+const readComponent = (filePath) => {
+  return fs.readFileSync(
+    path.join(__dirname, "components", filePath),
     "utf8"
   );
-  
+};
+
+// Route for the home page
+app.get("/", (req, res) => {
+  // Read the content of the navbar
+  const navbarContent = readComponent("navbar.ejs");
+
+  // Render the index page with navbar content
   res.render("index", {
     title: "Home",
+    navbar: navbarContent,
+  });
+});
+
+// Route for the pharmacie page
+app.get("/pharmacie", (req, res) => {
+  // Read the content of the navbar
+  const navbarContent = readComponent("navbar.ejs");
+
+  // Render the pharmacie page with navbar content
+  res.render("pharmacie", {
+    title: "Pharmacie",
     navbar: navbarContent,
   });
 });
