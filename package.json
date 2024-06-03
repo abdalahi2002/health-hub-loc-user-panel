@@ -1,0 +1,20 @@
+{
+  "name": "health-hub-loc-user-panel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/app.js",
+    "build:css": "npx tailwindcss -i ./src/public/css/tailwind.css -o ./src/public/css/tailwind-output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
+  }
+}
