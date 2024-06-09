@@ -35,4 +35,18 @@ router.get("/pharmacie", (req, res) => {
   }
 });
 
+router.get("/cabinet", (req, res) => {
+  try {
+    // Read components
+  
+
+    res.render("cabinet", { title: "cabinet" });
+  } catch (error) {
+    console.error("Error reading components:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+
 module.exports = router;

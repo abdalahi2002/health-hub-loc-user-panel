@@ -303,18 +303,104 @@
       </div>
       <div class="w-full md:w-[60%] h-[400px] md:h-[90vh]">
         <div class="relative w-full h-full">
-          <iframe
-            class="absolute top-0 left-0 w-full h-full"
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12080.73732861526!2d-74.0059418!3d40.7127847!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM40zMDA2JzEwLjAiTiA3NMKwMjUnMzcuNyJX!5e0!3m2!1sen!2sus!4v1648482801994!5m2!1sen!2sus"
-            frameborder="0"
-            style="border: 0"
-            allowfullscreen=""
-            aria-hidden="false"
-            tabindex="0"
-          >
-          </iframe>
+          <div id="map" class="absolute top-0 left-0 w-full h-full"></div>
         </div>
       </div>
     </div>
+
+    <script>
+      // Fonction d'initialisation de la carte
+      var map;
+      var markers = [];
+      var lines = [];
+
+      // Nouvelle fonction pour récupérer les pharmacies depuis l'API
+      async function fetchPharmacies() {
+        try {
+          const response = await fetch("http://MedJerrah:8080/api/health/pharmacies");
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          const pharmacies = await response.json();
+          console.log("Pharmacies fetched from API:", pharmacies); // Log pour vérifier la réponse de l'API
+          return pharmacies;
+        } catch (error) {
+          console.error("There was a problem with the fetch operation:", error);
+        }
+      }
+
+      async function initMap() {
+        // Coordonnées pour centrer la carte
+        var location = { lat: 18.089568255185064, lng: -15.984527865438487 };
+
+        // Création de la carte centrée sur la localisation
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: location
+        });
+
+        // Récupérer et afficher les pharmacies depuis l'API
+        const pharmacies = await fetchPharmacies();
+        if (pharmacies) {
+          displayPharmacies(pharmacies);
+        }
+      }
+
+      function displayPharmacies(pharmacies) {
+        console.log("Displaying pharmacies:", pharmacies); // Log pour vérifier les données passées à la fonction displayPharmacies
+
+        // Supprimer les anciens marqueurs et lignes
+        markers.forEach(marker => marker.setMap(null));
+        markers = [];
+        lines.forEach(line => line.setMap(null));
+        lines = [];
+
+        // Afficher les marqueurs pour chaque pharmacie
+        pharmacies.forEach(function(pharmacy) {
+          var infowindowContent = `
+            <div>
+              <strong>${pharmacy.name}</strong><br>
+              <a href="https://www.google.com/maps/dir/?api=1&destination=${pharmacy.longitude},${pharmacy.latitude}" target="_blank">View in Maps</a>
+            </div>
+          `;
+
+          var infowindow = new google.maps.InfoWindow({
+            content: infowindowContent
+          });
+
+          var marker = new google.maps.Marker({
+            position: { lat: pharmacy.longitude, lng: pharmacy.latitude },
+            map: map,
+            title: pharmacy.name
+          });
+
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+          });
+
+          markers.push(marker);
+        });
+      }
+
+      function filterPharmacies() {
+        var wilaya = document.getElementById('wilaya').value;
+        fetchPharmacies().then(pharmacies => {
+          var filteredPharmacies = pharmacies.filter(function(pharmacy) {
+            return pharmacy.wilaya === wilaya;
+          });
+          displayPharmacies(filteredPharmacies);
+        });
+      }
+
+      var wilayaColors = {
+        'Nouakchott Sud': '#FF0000',    // Rouge
+        'Nouakchott Ouest': '#00FF00',  // Vert
+        'Nouakchott Nord': '#0000FF'    // Bleu
+      };
+    </script>
+    <!-- Charger l'API de Google Maps en utilisant votre clé API -->
+    <script async defer
+           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7iU-ErVpTKuucu5uUi59Nqp0w7WNO4eA&libraries=places&callback=initMap">
+    </script>
   </body>
 </html>
