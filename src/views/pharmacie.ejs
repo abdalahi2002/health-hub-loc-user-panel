@@ -1,291 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pharmacy Locator</title>
-  <link href="../public/css/tailwind-output.css" rel="stylesheet" />
-</head>
-<body class="container mx-auto p-3">
-  <div class="p-4"><%- include('../components/navbar'); %></div>
-  <div class="flex flex-col md:flex-row">
-    <div class="mx-auto px-4 w-full md:w-[40%]">
-      <div class="flex flex-row justify-between">
-        <div class="flex flex-row w-full justify-between gap-2">
-          <div class="w-full">
-            <select
-              id="willayaSelect"
-              class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
-            >
-              <option selected>Choisissez une willaya</option>
-              <option value="Nouakchott-Nord">Nouakchott-Nord</option>
-              <option value="Nouakchott-Ouest">Nouakchott-Ouest</option>
-              <option value="Nouakchott-Sud">Nouakchott-Sud</option>
-            </select>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pharmacy Locator</title>
+    <link href="../public/css/tailwind-output.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  </head>
+  <body class="container mx-auto p-3">
+    <div class="p-4"><%- include('../components/navbar'); %></div>
+    <div class="flex flex-col md:flex-row">
+      <div class="mx-auto px-4 w-full md:w-[40%]">
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-row w-full justify-between gap-2">
+            <div class="w-full">
+              <select
+                id="willayaSelect"
+                class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
+              >
+                <option selected>Choisissez une willaya</option>
+                <option value="Nouakchott-Nord">Nouakchott-Nord</option>
+                <option value="Nouakchott-Ouest">Nouakchott-Ouest</option>
+                <option value="Nouakchott-Sud">Nouakchott-Sud</option>
+              </select>
+            </div>
+            <div class="w-full">
+              <select
+                id="moughataaSelect"
+                class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
+              >
+                <option selected>Choisissez une moughataa</option>
+                <option value="Dar-Naim">Dar-Naim</option>
+                <option value="Teyarett">Teyarett</option>
+                <option value="Toujounine">Toujounine</option>
+                <option value="Ksar">Ksar</option>
+                <option value="Sebkha">Sebkha</option>
+                <option value="Tevragh-Zeina">Tevragh-Zeina</option>
+                <option value="Arafat">Arafat</option>
+                <option value="El Mina">El Mina</option>
+                <option value="Riyadh">Riyadh</option>
+              </select>
+            </div>
           </div>
-          <div class="w-full">
-            <select
-              id="moughataaSelect"
-              class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
-            >
-              <option selected>Choisissez une moughataa</option>
-              <option value="Dar-Naim">Dar-Naim</option>
-              <option value="Teyarett">Teyarett</option>
-              <option value="Toujounine">Toujounine</option>
-              <option value="Ksar">Ksar</option>
-              <option value="Sebkha">Sebkha</option>
-              <option value="Tevragh-Zeina">Tevragh-Zeina</option>
-              <option value="Arafat">Arafat</option>
-              <option value="El Mina">El Mina</option>
-              <option value="Riyadh">Riyadh </option>
-            </select>
-          </div>
+          <div></div>
         </div>
-        <div></div>
+        <div class="mt-12">
+          <table id="pharmacyTable" class="display mt-12 w-full border border-[#47C3A4]">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Distance</th>
+                <th>Adresse</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="pharmacyList"></tbody>
+          </table>
+        </div>
       </div>
-      <ul class="mt-12 divide-y" id="pharmacyList"></ul>
-    </div>
-    <div class="w-full md:w-[60%] h-[400px] md:h-[90vh]">
-      <div class="relative w-full h-full">
-        <div id="map" class="absolute top-0 left-0 w-full h-full"></div>
+      <div class="w-full md:w-[60%] h-[400px] md:h-[90vh]">
+        <div class="relative w-full h-full">
+          <div id="map" class="absolute top-0 left-0 w-full h-full"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    var map;
-    var markers = [];
-    var polylines = [];
-    var directionsService;
-    var directionsRenderer;
-    var pharmacies = [];
+    <script>
+      var map;
+      var markers = [];
+      var polylines = [];
+      var directionsService;
+      var directionsRenderer;
+      var pharmacies = [];
 
-    async function fetchPharmacies() {
-      try {
-        const response = await fetch("http://localhost:8080/api/health/pharmacies");
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
+      async function fetchPharmacies() {
+        try {
+          const response = await fetch(
+            "http://localhost:8080/api/health/pharmacies"
+          );
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+          pharmacies = await response.json();
+          console.log("Pharmacies fetched from API:", pharmacies);
+          return pharmacies;
+        } catch (error) {
+          console.error("There was a problem with the fetch operation:", error);
         }
-        pharmacies = await response.json();
-        console.log("Pharmacies fetched from API:", pharmacies);
-        return pharmacies;
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      }
-    }
-
-    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-      const R = 6371;
-      const dLat = deg2rad(lat2 - lat1);
-      const dLon = deg2rad(lon2 - lon1);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const d = R * c;
-      return d;
-    }
-
-    function deg2rad(deg) {
-      return deg * (Math.PI / 180);
-    }
-
-    async function initMap() {
-      var location = { lat: 18.089568255185064, lng: -15.984527865438487 };
-
-      map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: location
-      });
-
-      directionsService = new google.maps.DirectionsService();
-      directionsRenderer = new google.maps.DirectionsRenderer();
-      directionsRenderer.setMap(map);
-
-      const pharmacies = await fetchPharmacies();
-      if (pharmacies) {
-        displayPharmacies(pharmacies);
-        drawWillayaLines(pharmacies);
       }
 
-      document.getElementById('willayaSelect').addEventListener('change', filterPharmacies);
-      document.getElementById('moughataaSelect').addEventListener('change', filterPharmacies);
-    }
+      function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = deg2rad(lat2 - lat1);
+        const dLon = deg2rad(lon2 - lon1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(deg2rad(lat1)) *
+            Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c;
+        return d;
+      }
 
-    function drawWillayaLines(pharmacies) {
-      clearPolylines();
-      const willayaGroups = pharmacies.reduce((acc, pharmacy) => {
-        if (!acc[pharmacy.willaya]) {
-          acc[pharmacy.willaya] = [];
-        }
-        acc[pharmacy.willaya].push(pharmacy);
-        return acc;
-      }, {});
+      function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+      }
 
-      const colors = {
-        'Nouakchott-Nord': '#FF0000',
-        'Nouakchott-Ouest': '#00FF00',
-        'Nouakchott-Sud': '#0000FF'
-      };
+      async function initMap() {
+        var location = { lat: 18.089568255185064, lng: -15.984527865438487 };
 
-      Object.keys(willayaGroups).forEach(willaya => {
-        const lineCoordinates = willayaGroups[willaya].map(pharmacy => ({ lat: pharmacy.latitude, lng: pharmacy.longitude }));
-        const polyline = new google.maps.Polyline({
-          path: lineCoordinates,
-          geodesic: true,
-          strokeColor: colors[willaya],
-          strokeOpacity: 1.0,
-          strokeWeight: 2
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 12,
+          center: location,
         });
-        polyline.setMap(map);
-        polylines.push(polyline);
-      });
-    }
 
-    function clearPolylines() {
-      polylines.forEach(polyline => polyline.setMap(null));
-      polylines = [];
-    }
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
 
-    function displayPharmacies(pharmacies) {
-      console.log("Displaying pharmacies:", pharmacies);
+        const pharmacies = await fetchPharmacies();
+        if (pharmacies) {
+          displayPharmacies(pharmacies);
+          drawWillayaLines(pharmacies);
+        }
 
-      markers.forEach(marker => marker.setMap(null));
-      markers = [];
+        document
+          .getElementById("willayaSelect")
+          .addEventListener("change", filterPharmacies);
+        document
+          .getElementById("moughataaSelect")
+          .addEventListener("change", filterPharmacies);
+      }
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
+      function drawWillayaLines(pharmacies) {
+        clearPolylines();
+        const willayaGroups = pharmacies.reduce((acc, pharmacy) => {
+          if (!acc[pharmacy.willaya]) {
+            acc[pharmacy.willaya] = [];
+          }
+          acc[pharmacy.willaya].push(pharmacy);
+          return acc;
+        }, {});
 
-            const pharmacyDistances = pharmacies.map(pharmacy => {
-              const distance = getDistanceFromLatLonInKm(
-                userLat,
-                userLng,
-                pharmacy.latitude,
-                pharmacy.longitude
-              );
-              return { ...pharmacy, distance };
-            });
+        const colors = {
+          "Nouakchott-Nord": "#FF0000",
+          "Nouakchott-Ouest": "#00FF00",
+          "Nouakchott-Sud": "#0000FF",
+        };
 
-            pharmacyDistances.sort((a, b) => a.distance - b.distance);
+        Object.keys(willayaGroups).forEach((willaya) => {
+          const lineCoordinates = willayaGroups[willaya].map((pharmacy) => ({
+            lat: pharmacy.latitude,
+            lng: pharmacy.longitude,
+          }));
+          const polyline = new google.maps.Polyline({
+            path: lineCoordinates,
+            geodesic: true,
+            strokeColor: colors[willaya],
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+          });
+          polyline.setMap(map);
+          polylines.push(polyline);
+        });
+      }
 
-            const pharmacyList = document.getElementById('pharmacyList');
-            pharmacyList.innerHTML = '';
+      function clearPolylines() {
+        polylines.forEach((polyline) => polyline.setMap(null));
+        polylines = [];
+      }
 
-            pharmacyDistances.forEach((pharmacy, index) => {
-              const li = document.createElement('li');
-              li.classList.add('py-5', 'flex', 'items-start', 'justify-between');
-              li.innerHTML = `
-                <div class="flex gap-3">
-                  <img src="../public/assets/Logos/paris.jpeg" class="flex-none w-16 h-16" />
-                  <div>
-                    <span class="block text-sm text-gray-700 font-semibold">${pharmacy.name}</span>
-                    <span class="block text-sm text-gray-600">${pharmacy.distance.toFixed(2)} km</span>
-                    <span class="block text-sm text-gray-600">Willaya: ${pharmacy.willaya}</span>
-                    <span class="block text-sm text-gray-600">Moughataa: ${pharmacy.moughataa}</span>
-                  </div>
-                </div>
-                <a
-                   href="https://www.google.com/maps/dir/?api=1&destination=${pharmacy.latitude},${pharmacy.longitude}"
-                   target="_blank"
-                  class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
-                  
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 4"
-                    />
-                  </svg>
-                  View in map
-                </a>`;
-              pharmacyList.appendChild(li);
+      function displayPharmacies(pharmacies) {
+        console.log("Displaying pharmacies:", pharmacies);
 
-              const marker = new google.maps.Marker({
-                position: { lat: pharmacy.latitude, lng: pharmacy.longitude },
-                map: map,
-                title: pharmacy.name
+        markers.forEach((marker) => marker.setMap(null));
+        markers = [];
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+
+              const pharmacyDistances = pharmacies.map((pharmacy) => {
+                const distance = getDistanceFromLatLonInKm(
+                  userLat,
+                  userLng,
+                  pharmacy.latitude,
+                  pharmacy.longitude
+                );
+                return { ...pharmacy, distance };
               });
 
-              const infoWindow = new google.maps.InfoWindow({
-                content: `
+              pharmacyDistances.sort((a, b) => a.distance - b.distance);
+
+              const pharmacyList = document.getElementById("pharmacyList");
+              pharmacyList.innerHTML = "";
+
+              pharmacyDistances.forEach((pharmacy, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                <td><img src="${pharmacy.img}" class="w-16 h-16" /></td>
+                <td>${pharmacy.name}</td>
+                <td>${pharmacy.distance.toFixed(2)} km</td>
+                <td>${pharmacy.willaya} - ${pharmacy.moughataa}</td>
+                <td>
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=${
+                      pharmacy.latitude
+                    },${pharmacy.longitude}"
+                    target="_blank"
+                    class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 4"
+                      />
+                    </svg>
+                    View in map
+                  </a>
+                </td>`;
+                pharmacyList.appendChild(tr);
+
+                const marker = new google.maps.Marker({
+                  position: { lat: pharmacy.latitude, lng: pharmacy.longitude },
+                  map: map,
+                  title: pharmacy.name,
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                  content: `
                   <div>
                     <h2>${pharmacy.name}</h2>
                     <p>Willaya: ${pharmacy.willaya}</p>
                     <p>Moughataa: ${pharmacy.moughataa}</p>
-                   <a href="https://www.google.com/maps/dir/?api=1&destination=${pharmacy.latitude},${pharmacy.longitude}" target="_blank">View in Maps</a>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${pharmacy.latitude},${pharmacy.longitude}" target="_blank">View in Maps</a>
                   </div>
-                `
+                `,
+                });
+
+                marker.addListener("click", () => {
+                  infoWindow.open(map, marker);
+                });
+
+                markers.push(marker);
               });
 
-              marker.addListener('click', () => {
-                infoWindow.open(map, marker);
+              drawWillayaLines(pharmacyDistances);
+
+              // Initialize DataTable
+              $("#pharmacyTable").DataTable();
+            },
+            (error) => {
+              console.error("Error getting user location:", error);
+            }
+          );
+        } else {
+          console.error("Geolocation is not supported by this browser.");
+        }
+      }
+
+      function filterPharmacies() {
+        const willaya = document.getElementById("willayaSelect").value;
+        const moughataa = document.getElementById("moughataaSelect").value;
+
+        const filteredPharmacies = pharmacies.filter((pharmacy) => {
+          return (
+            (willaya === "Choisissez une willaya" ||
+              pharmacy.willaya === willaya) &&
+            (moughataa === "Choisissez une moughataa" ||
+              pharmacy.moughataa === moughataa)
+          );
+        });
+
+        displayPharmacies(filteredPharmacies);
+      }
+
+      function getDirections(lat, lng) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+              const request = {
+                origin: { lat: userLat, lng: userLng },
+                destination: { lat: lat, lng: lng },
+                travelMode: google.maps.TravelMode.DRIVING,
+              };
+              directionsService.route(request, (result, status) => {
+                if (status == google.maps.DirectionsStatus.OK) {
+                  directionsRenderer.setDirections(result);
+                  map.setZoom(15);
+                } else {
+                  console.error("Directions request failed due to " + status);
+                }
               });
-
-              markers.push(marker);
-            });
-
-            drawWillayaLines(pharmacyDistances);
-          },
-          error => {
-            console.error('Error getting user location:', error);
-          }
-        );
-      } else {
-        console.error('Geolocation is not supported by this browser.');
+            },
+            (error) => {
+              console.error("Error getting user location:", error);
+            }
+          );
+        }
       }
-    }
-
-    function filterPharmacies() {
-      const willaya = document.getElementById('willayaSelect').value;
-      const moughataa = document.getElementById('moughataaSelect').value;
-
-      const filteredPharmacies = pharmacies.filter(pharmacy => {
-        return (willaya === 'Choisissez une willaya' || pharmacy.willaya === willaya) &&
-               (moughataa === 'Choisissez une moughataa' || pharmacy.moughataa === moughataa);
-      });
-
-      displayPharmacies(filteredPharmacies);
-    }
-
-    function getDirections(lat, lng) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
-            const request = {
-              origin: { lat: userLat, lng: userLng },
-              destination: { lat: lat, lng: lng },
-              travelMode: google.maps.TravelMode.DRIVING
-            };
-            directionsService.route(request, (result, status) => {
-              if (status == google.maps.DirectionsStatus.OK) {
-                directionsRenderer.setDirections(result);
-                map.setZoom(15);
-              } else {
-                console.error('Directions request failed due to ' + status);
-              }
-            });
-          },
-          error => {
-            console.error('Error getting user location:', error);
-          }
-        );
-      }
-    }
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7iU-ErVpTKuucu5uUi59Nqp0w7WNO4eA&libraries=places&callback=initMap"></script>
-</body>
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7iU-ErVpTKuucu5uUi59Nqp0w7WNO4eA&libraries=places&callback=initMap"
+    ></script>
+  </body>
 </html>
