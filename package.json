@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.js",
-    "build:css": "npx tailwindcss -i ./src/public/css/tailwind.css -o ./src/public/css/tailwind-output.css --watch"
+    "start": "node src/app.js",
+    "build:css": "npx tailwindcss -i ./src/public/css/tailwind.css -o ./src/public/css/tailwind-output.css --watch",
+    "dev": "concurrently \"npm run start\" \"npm run build:css\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "postcss": "^8.4.38",
