@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pharmacy Locator</title>
     <link href="../public/css/tailwind-output.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"
-    />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   </head>
   <body class="container mx-auto p-3">
     <div class="p-4"><%- include('../components/navbar'); %></div>
@@ -49,20 +43,7 @@
           </div>
           <div></div>
         </div>
-        <div class="mt-12">
-          <table id="pharmacyTable" class="display mt-12 w-full border border-[#47C3A4]">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Nom</th>
-                <th>Distance</th>
-                <th>Adresse</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="pharmacyList"></tbody>
-          </table>
-        </div>
+        <ul class="mt-12 divide-y" id="pharmacyList"></ul>
       </div>
       <div class="w-full md:w-[60%] h-[400px] md:h-[90vh]">
         <div class="relative w-full h-full">
@@ -208,38 +189,54 @@
               pharmacyList.innerHTML = "";
 
               pharmacyDistances.forEach((pharmacy, index) => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                <td><img src="${pharmacy.img}" class="w-16 h-16" /></td>
-                <td>${pharmacy.name}</td>
-                <td>${pharmacy.distance.toFixed(2)} km</td>
-                <td>${pharmacy.willaya} - ${pharmacy.moughataa}</td>
-                <td>
-                  <a
-                    href="https://www.google.com/maps/dir/?api=1&destination=${
-                      pharmacy.latitude
-                    },${pharmacy.longitude}"
-                    target="_blank"
-                    class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
+                const li = document.createElement("li");
+                li.classList.add(
+                  "py-5",
+                  "flex",
+                  "items-start",
+                  "justify-between"
+                );
+                li.innerHTML = `
+                <div class="flex gap-3">
+                  <img src="../public/assets/Logos/paris.jpeg" class="flex-none w-16 h-16" />
+                  <div>
+                    <span class="block text-sm text-gray-700 font-semibold">${
+                      pharmacy.name
+                    }</span>
+                    <span class="block text-sm text-gray-600">${pharmacy.distance.toFixed(
+                      2
+                    )} km</span>
+                    <span class="block text-sm text-gray-600"> ${
+                      pharmacy.willaya
+                    }-${pharmacy.moughataa}</span>
+                    <span class="block text-sm text-gray-600"></span>
+                  </div>
+                </div>
+                <a
+                   href="https://www.google.com/maps/dir/?api=1&destination=${
+                     pharmacy.latitude
+                   },${pharmacy.longitude}"
+                   target="_blank"
+                  class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
+                  
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 4"
-                      />
-                    </svg>
-                    View in map
-                  </a>
-                </td>`;
-                pharmacyList.appendChild(tr);
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 4"
+                    />
+                  </svg>
+                  View in map
+                </a>`;
+                pharmacyList.appendChild(li);
 
                 const marker = new google.maps.Marker({
                   position: { lat: pharmacy.latitude, lng: pharmacy.longitude },
@@ -253,7 +250,7 @@
                     <h2>${pharmacy.name}</h2>
                     <p>Willaya: ${pharmacy.willaya}</p>
                     <p>Moughataa: ${pharmacy.moughataa}</p>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=${pharmacy.latitude},${pharmacy.longitude}" target="_blank">View in Maps</a>
+                   <a href="https://www.google.com/maps/dir/?api=1&destination=${pharmacy.latitude},${pharmacy.longitude}" target="_blank">View in Maps</a>
                   </div>
                 `,
                 });
@@ -266,9 +263,6 @@
               });
 
               drawWillayaLines(pharmacyDistances);
-
-              // Initialize DataTable
-              $("#pharmacyTable").DataTable();
             },
             (error) => {
               console.error("Error getting user location:", error);
