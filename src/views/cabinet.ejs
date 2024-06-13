@@ -44,6 +44,11 @@
         <div></div>
       </div>
       <ul class="mt-12 divide-y" id="cabinetList"></ul>
+      <div class="flex justify-between mt-4">
+        <button id="prevBtn" class="bg-[#47C3A4] text-white px-4 py-2 rounded-lg" disabled>Précédent</button>
+        <span id="pageCounter" class="text-gray-700 text-sm"></span>
+        <button id="nextBtn" class="bg-[#47C3A4] text-white px-4 py-2 rounded-lg">Suivant</button>
+      </div>
     </div>
     <div class="w-full md:w-[60%] h-[400px] md:h-[90vh]">
       <div class="relative w-full h-full">
@@ -59,6 +64,8 @@
     var directionsService;
     var directionsRenderer;
     var cabinets = [];
+    var currentPage = 1;
+    var cabinetsPerPage = 5;
 
     async function fetchCabinets() {
       try {
@@ -111,6 +118,8 @@
 
       document.getElementById('willayaSelect').addEventListener('change', filterCabinets);
       document.getElementById('moughataaSelect').addEventListener('change', filterCabinets);
+      document.getElementById('prevBtn').addEventListener('click', showPreviousPage);
+      document.getElementById('nextBtn').addEventListener('click', showNextPage);
     }
 
     function drawWillayaLines(cabinets) {
@@ -153,6 +162,7 @@
 
       markers.forEach(marker => marker.setMap(null));
       markers = [];
+      clearPolylines(); // Clear the polylines before drawing new ones
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -175,7 +185,9 @@
             const cabinetList = document.getElementById('cabinetList');
             cabinetList.innerHTML = '';
 
-            cabinetDistances.forEach((cabinet, index) => {
+            const paginatedCabinets = paginate(cabinetDistances, currentPage, cabinetsPerPage);
+
+            paginatedCabinets.forEach((cabinet, index) => {
               const li = document.createElement('li');
               li.classList.add('py-5', 'flex', 'items-start', 'justify-between');
               li.innerHTML = `
@@ -184,15 +196,13 @@
                   <div>
                     <span class="block text-sm text-gray-700 font-semibold">${cabinet.nom}</span>
                     <span class="block text-sm text-gray-600">${cabinet.distance.toFixed(2)} km</span>
-                    <span class="block text-sm text-gray-600">Willaya: ${cabinet.willaya}</span>
-                    <span class="block text-sm text-gray-600">Moughataa: ${cabinet.moughataa}</span>
+                    <span class="block text-sm text-gray-600"> ${cabinet.willaya}-${cabinet.moughataa}</span>
                   </div>
                 </div>
                 <a
                    href="https://www.google.com/maps/dir/?api=1&destination=${cabinet.latitude},${cabinet.longitude}"
                    target="_blank"
                   class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
-                  
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +246,8 @@
               markers.push(marker);
             });
 
-            drawWillayaLines(cabinetDistances);
+            updatePaginationButtons(cabinetDistances.length);
+            drawWillayaLines(paginatedCabinets);
           },
           error => {
             console.error('Error getting user location:', error);
@@ -245,6 +256,32 @@
       } else {
         console.error('Geolocation is not supported by this browser.');
       }
+    }
+
+    function paginate(items, currentPage, itemsPerPage) {
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      return items.slice(start, end);
+    }
+
+    function updatePaginationButtons(totalItems) {
+      const totalPages = Math.ceil(totalItems / cabinetsPerPage);
+      const pageCounter = document.getElementById('pageCounter');
+      pageCounter.textContent = `${currentPage}/${totalPages}`;
+      document.getElementById('prevBtn').disabled = currentPage === 1;
+      document.getElementById('nextBtn').disabled = currentPage === totalPages;
+    }
+
+    function showPreviousPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        filterCabinets();
+      }
+    }
+
+    function showNextPage() {
+      currentPage++;
+      filterCabinets();
     }
 
     function filterCabinets() {
@@ -289,3 +326,4 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7iU-ErVpTKuucu5uUi59Nqp0w7WNO4eA&libraries=places&callback=initMap"></script>
 </body>
 </html>
+
