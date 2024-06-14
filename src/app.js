@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const ejs = require("ejs"); // Import EJS module
+const { title } = require("process");
 const app = express();
 
 // Set EJS as the view engine
@@ -54,6 +55,16 @@ app.get("/docteur", (req, res) => {
     title: "docteur",
     navbar: navbarContent,
   });
+});
+
+app.get('/docteurdetails/:id', (req, res) => {
+  // Read the content of the navbar
+  const navbarContent = readComponent("navbar.ejs");
+  const doctorId = req.params.id;
+  res.render('docteurdetails', { 
+    title: "docteurdetails",
+    navbar: navbarContent,
+    doctorId: doctorId });
 });
 
 app.get("/cabinet", (req, res) => {

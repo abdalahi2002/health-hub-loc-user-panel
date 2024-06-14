@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Liste des Docteurs</title>
+    <title><%= title %></title>
     <link href="../public/css/tailwind-output.css" rel="stylesheet" />
   </head>
   <body class="container mx-auto p-3">
@@ -34,53 +34,148 @@
       <ul id="doctorList" class="mt-12 divide-y">
         <!-- Les docteurs seront insérés ici -->
       </ul>
+
+      <div class="flex flex-col items-center">
+        <!-- Help text -->
+        <span class="text-sm text-gray-700" id="pageCounter">
+          Affichage de
+          <span class="font-semibold text-gray-900" id="startIndex"></span>
+          à
+          <span class="font-semibold text-gray-900" id="endIndex"></span>
+          sur
+          <span class="font-semibold text-gray-900" id="totalEntries"></span>
+          Entrées
+        </span>
+        <div class="inline-flex mt-2 xs:mt-0 justify-between gap-2">
+          <!-- Buttons -->
+          <button
+            id="prevBtn"
+            class="flex items-center justify-center border border-[#47C3A4] px-3 h-8 text-sm font-medium text-gray-700 rounded-s hover:bg-[#47C3A4]"
+          >
+            <svg
+              class="w-3.5 h-3.5 me-2 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 5H1m0 0 4 4M1 5l4-4"
+              />
+            </svg>
+            Prev
+          </button>
+          <button
+            id="nextBtn"
+            class="flex items-center justify-center border border-[#47C3A4] px-3 h-8 text-sm font-medium text-gray-700 rounded-s hover:bg-[#47C3A4]"
+          >
+            Next
+            <svg
+              class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const specialitySelect = document.getElementById("specialitySelect");
         const doctorList = document.getElementById("doctorList");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const pageCounter = document.getElementById("pageCounter");
+        const startIndexSpan = document.getElementById("startIndex");
+        const endIndexSpan = document.getElementById("endIndex");
+        const totalEntriesSpan = document.getElementById("totalEntries");
 
-        function fetchDoctors(speciality = "") {
+        let currentPage = 1;
+        const pageSize = 10;
+        let totalEntries = 0;
+
+        function updatePageCounter() {
+          const startIndex = (currentPage - 1) * pageSize + 1;
+          const endIndex = Math.min(currentPage * pageSize, totalEntries);
+          const totalPages = Math.ceil(totalEntries / pageSize);
+          startIndexSpan.textContent = startIndex;
+          endIndexSpan.textContent = endIndex;
+          totalEntriesSpan.textContent = totalPages;
+        }
+
+        function fetchDoctors(speciality = "", page = 1, size = 10) {
           fetch("http://localhost:8080/api/health/doctors")
             .then((response) => response.json())
             .then((data) => {
+              totalEntries = data.length;
               doctorList.innerHTML = ""; // Clear any existing content
-              data
+              const filteredData = data
                 .filter(
                   (doctor) => !speciality || doctor.speciality === speciality
                 )
-                .forEach((doctor) => {
-                  const listItem = document.createElement("li");
-                  listItem.className = "py-5 flex items-start justify-between";
-                  listItem.innerHTML = `
-                    <div class="flex gap-3">
-                      <img src="../public/assets/Logos/doc.png" class="flex-none w-16 h-16" />
-                      <div>
-                        <span class="block text-sm text-gray-700 font-semibold">${doctor.name}</span>
-                        <span class="block text-sm text-gray-600">${doctor.speciality}</span>
-                        <span class="block text-sm text-gray-600">${doctor.cabinet.nom}</span>
-                      </div>
-                    </div>
-                    <a
-                      href="https://www.google.com/maps/dir/?api=1&destination=${doctor.cabinet.latitude},${doctor.cabinet.longitude}"
-                      target="_blank"
-                      class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 4" />
-                      </svg>
-                      Voir les détails
-                    </a>
-                  `;
-                  doctorList.appendChild(listItem);
-                });
+                .slice((page - 1) * size, page * size);
+              filteredData.forEach((doctor) => {
+                const listItem = document.createElement("li");
+                listItem.className = "py-5 flex items-start justify-between";
+                listItem.innerHTML = `
+                <div class="flex gap-3">
+                  <img src="../public/assets/Logos/doc.png" class="flex-none w-16 h-16" />
+                  <div>
+                    <span class="block text-sm text-gray-700 font-semibold">${doctor.name}</span>
+                    <span class="block text-sm text-gray-600">${doctor.speciality}</span>
+                    <span class="block text-sm text-gray-600">${doctor.cabinet.nom}</span>
+                  </div>
+                </div>
+                <a
+                  href="/docteurdetails/${doctor.id}"
+                  target="_blank"
+                  class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 4" />
+                  </svg>
+                  Voir les détails
+                </a>
+              `;
+                doctorList.appendChild(listItem);
+              });
+              updatePageCounter();
             })
             .catch((error) => console.error("Error fetching doctors:", error));
         }
 
         specialitySelect.addEventListener("change", function () {
           const selectedSpeciality = this.value;
-          fetchDoctors(selectedSpeciality);
+          currentPage = 1;
+          fetchDoctors(selectedSpeciality, currentPage, pageSize);
+        });
+
+        prevBtn.addEventListener("click", function () {
+          if (currentPage > 1) {
+            currentPage--;
+            fetchDoctors(specialitySelect.value, currentPage, pageSize);
+          }
+        });
+
+        nextBtn.addEventListener("click", function () {
+          if (currentPage * pageSize < totalEntries) {
+            currentPage++;
+            fetchDoctors(specialitySelect.value, currentPage, pageSize);
+          }
         });
 
         // Fetch all doctors on initial load
