@@ -24,7 +24,7 @@
 
         <div class="p-8">
           <div
-            class="uppercase tracking-wide text-sm text-gray-700 font-semibold"
+            class="uppercase block mt-1 text-lg leading-tight font-medium text-black"
             id="doctorName"
           ></div>
           <p
@@ -36,6 +36,18 @@
             id="cabinetName"
           ></p>
         </div>
+      </div>
+    </div>
+
+    <div
+      class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-5"
+      id="scheduleDetails"
+    >
+      <div class="p-8">
+        <h4 class="mb-4 text-gray-700">Emplois du Temp</h4>
+        <ul id="scheduleList">
+          <!-- Doctor schedule will be inserted here -->
+        </ul>
       </div>
     </div>
 
@@ -76,22 +88,9 @@
       </div>
     </div>
 
-    <div
-      class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-5"
-      id="scheduleDetails"
-    >
-      <div class="p-8">
-        <h4 class="mb-4 text-gray-700">Schedule</h4>
-        <ul id="scheduleList">
-          <!-- Doctor schedule will be inserted here -->
-        </ul>
-      </div>
-    </div>
-
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // const urlParams = new URLSearchParams(window.location.search);
-        // const doctorId = urlParams.get("doctorId");
+        const doctorId = "<%= doctorId %>";
         console.log("hello ", doctorId);
         fetch(`http://localhost:8080/api/health/doctors/${doctorId}`)
           .then((response) => response.json())
@@ -99,13 +98,12 @@
             document.getElementById("doctorName").innerText = data.name;
             document.getElementById("doctorSpeciality").innerText =
               data.speciality;
-            document.getElementById("cabinetName").innerText =
-              data.cabinet.name;
+            document.getElementById("cabinetName").innerText = data.cabinet.nom;
             document.getElementById("cabinetNameDetail").innerText =
-              data.cabinet.name;
+              data.cabinet.nom;
             document.getElementById(
               "cabinetLocation"
-            ).innerText = `${data.cabinet.city} - ${data.cabinet.address}`;
+            ).innerText = `${data.cabinet.willaya} - ${data.cabinet.moughataa}`;
 
             document.getElementById(
               "mapLink"
