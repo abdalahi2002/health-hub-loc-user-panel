@@ -1,206 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
-  <link href="../public/css/tailwind-output.css" rel="stylesheet" />
-</head>
-<body class="container mx-auto p-3">
-  <div class="p-4"><%- include('../components/navbar'); %></div>
-  <div class="flex flex-col md:flex-row">
-    <div class="mx-auto px-4 w-full md:w-[40%]">
-      <div class="flex flex-row justify-between">
-        <div class="flex flex-row w-full justify-between gap-2">
-          <div class="w-full">
-            <select
-              id="willayaSelect"
-              class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
-            >
-              <option selected>Choisissez une willaya</option>
-              <option value="Nouakchott-Nord">Nouakchott-Nord</option>
-              <option value="Nouakchott-Ouest">Nouakchott-Ouest</option>
-              <option value="Nouakchott-Sud">Nouakchott-Sud</option>
-            </select>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link href="../public/css/tailwind-output.css" rel="stylesheet" />
+  </head>
+  <body class="container mx-auto p-3">
+    <div class="p-4"><%- include('../components/navbar'); %></div>
+    <div class="flex flex-col md:flex-row">
+      <div class="mx-auto px-4 w-full md:w-[40%]">
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-row w-full justify-between gap-2">
+            <div class="w-full">
+              <select
+                id="willayaSelect"
+                class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
+              >
+                <option selected>Choisissez une willaya</option>
+                <option value="Nouakchott-Nord">Nouakchott-Nord</option>
+                <option value="Nouakchott-Ouest">Nouakchott-Ouest</option>
+                <option value="Nouakchott-Sud">Nouakchott-Sud</option>
+              </select>
+            </div>
+            <div class="w-full">
+              <select
+                id="moughataaSelect"
+                class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
+              >
+                <option selected>Choisissez une moughataa</option>
+                <option value="Dar-Naim">Dar-Naim</option>
+                <option value="Teyarett">Teyarett</option>
+                <option value="Toujounine">Toujounine</option>
+                <option value="Ksar">Ksar</option>
+                <option value="Sebkha">Sebkha</option>
+                <option value="Tevragh-Zeina">Tevragh-Zeina</option>
+                <option value="Arafat">Arafat</option>
+                <option value="El Mina">El Mina</option>
+                <option value="Riyadh">Riyadh</option>
+              </select>
+            </div>
           </div>
-          <div class="w-full">
-            <select
-              id="moughataaSelect"
-              class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
+          <div></div>
+        </div>
+        <ul class="mt-12 divide-y" id="cabinetList"></ul>
+
+        <div class="flex flex-col items-center">
+          <!-- Help text -->
+          <span
+            class="text-sm text-gray-700"
+            id="pageCounter"
+          >
+            
+          </span>
+          <div class="inline-flex mt-2 xs:mt-0 justify-between gap-2">
+            <!-- Buttons -->
+            <button
+              id="prevBtn"
+              class="flex items-center justify-center border border-[#47C3A4] px-3 h-8 text-sm font-medium text-gray-700 rounded-s hover:bg-[#47C3A4] "
             >
-              <option selected>Choisissez une moughataa</option>
-              <option value="Dar-Naim">Dar-Naim</option>
-              <option value="Teyarett">Teyarett</option>
-              <option value="Toujounine">Toujounine</option>
-              <option value="Ksar">Ksar</option>
-              <option value="Sebkha">Sebkha</option>
-              <option value="Tevragh-Zeina">Tevragh-Zeina</option>
-              <option value="Arafat">Arafat</option>
-              <option value="El Mina">El Mina</option>
-              <option value="Riyadh">Riyadh </option>
-            </select>
+              <svg
+                class="w-3.5 h-3.5 me-2 rtl:rotate-180"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 5H1m0 0 4 4M1 5l4-4"
+                />
+              </svg>
+              Prev
+            </button>
+            <button
+              id="nextBtn"
+              class="flex items-center justify-center border border-[#47C3A4] px-3 h-8 text-sm font-medium text-gray-700 rounded-s hover:bg-[#47C3A4] "
+            >
+              Next
+              <svg
+                class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </button>
           </div>
         </div>
-        <div></div>
       </div>
-      <ul class="mt-12 divide-y" id="cabinetList"></ul>
-      <div class="flex justify-between mt-4">
-        <button id="prevBtn" class="bg-[#47C3A4] text-white px-4 py-2 rounded-lg" disabled>Précédent</button>
-        <span id="pageCounter" class="text-gray-700 text-sm"></span>
-        <button id="nextBtn" class="bg-[#47C3A4] text-white px-4 py-2 rounded-lg">Suivant</button>
+      <div class="w-full md:w-[60%] h-[400px] md:h-[90vh]">
+        <div class="relative w-full h-full">
+          <div id="map" class="absolute top-0 left-0 w-full h-full"></div>
+        </div>
       </div>
     </div>
-    <div class="w-full md:w-[60%] h-[400px] md:h-[90vh]">
-      <div class="relative w-full h-full">
-        <div id="map" class="absolute top-0 left-0 w-full h-full"></div>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    var map;
-    var markers = [];
-    var polylines = [];
-    var directionsService;
-    var directionsRenderer;
-    var cabinets = [];
-    var currentPage = 1;
-    var cabinetsPerPage = 5;
+    <script>
+      var map;
+      var markers = [];
+      var polylines = [];
+      var directionsService;
+      var directionsRenderer;
+      var cabinets = [];
+      var currentPage = 1;
+      var cabinetsPerPage = 5;
 
-    async function fetchCabinets() {
-      try {
-        const response = await fetch("http://MedJerrah:8080/api/health/cabinets");
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
+      async function fetchCabinets() {
+        try {
+          const response = await fetch(
+            "http://localhost:8080/api/health/cabinets"
+          );
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+          cabinets = await response.json();
+          console.log("Cabinets fetched from API:", cabinets);
+          return cabinets;
+        } catch (error) {
+          console.error("There was a problem with the fetch operation:", error);
         }
-        cabinets = await response.json();
-        console.log("Cabinets fetched from API:", cabinets);
-        return cabinets;
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      }
-    }
-
-    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-      const R = 6371;
-      const dLat = deg2rad(lat2 - lat1);
-      const dLon = deg2rad(lon2 - lon1);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const d = R * c;
-      return d;
-    }
-
-    function deg2rad(deg) {
-      return deg * (Math.PI / 180);
-    }
-
-    async function initMap() {
-      var location = { lat: 18.089568255185064, lng: -15.984527865438487 };
-
-      map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: location
-      });
-
-      directionsService = new google.maps.DirectionsService();
-      directionsRenderer = new google.maps.DirectionsRenderer();
-      directionsRenderer.setMap(map);
-
-      const cabinets = await fetchCabinets();
-      if (cabinets) {
-        displayCabinets(cabinets);
-        drawWillayaLines(cabinets);
       }
 
-      document.getElementById('willayaSelect').addEventListener('change', filterCabinets);
-      document.getElementById('moughataaSelect').addEventListener('change', filterCabinets);
-      document.getElementById('prevBtn').addEventListener('click', showPreviousPage);
-      document.getElementById('nextBtn').addEventListener('click', showNextPage);
-    }
+      function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = deg2rad(lat2 - lat1);
+        const dLon = deg2rad(lon2 - lon1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(deg2rad(lat1)) *
+            Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c;
+        return d;
+      }
 
-    function drawWillayaLines(cabinets) {
-      clearPolylines();
-      const willayaGroups = cabinets.reduce((acc, cabinet) => {
-        if (!acc[cabinet.willaya]) {
-          acc[cabinet.willaya] = [];
-        }
-        acc[cabinet.willaya].push(cabinet);
-        return acc;
-      }, {});
+      function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+      }
 
-      const colors = {
-        'Nouakchott-Nord': '#FF0000',
-        'Nouakchott-Ouest': '#00FF00',
-        'Nouakchott-Sud': '#0000FF'
-      };
+      async function initMap() {
+        var location = { lat: 18.089568255185064, lng: -15.984527865438487 };
 
-      Object.keys(willayaGroups).forEach(willaya => {
-        const lineCoordinates = willayaGroups[willaya].map(cabinet => ({ lat: cabinet.latitude, lng: cabinet.longitude }));
-        const polyline = new google.maps.Polyline({
-          path: lineCoordinates,
-          geodesic: true,
-          strokeColor: colors[willaya],
-          strokeOpacity: 1.0,
-          strokeWeight: 2
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 12,
+          center: location,
         });
-        polyline.setMap(map);
-        polylines.push(polyline);
-      });
-    }
 
-    function clearPolylines() {
-      polylines.forEach(polyline => polyline.setMap(null));
-      polylines = [];
-    }
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
 
-    function displayCabinets(cabinets) {
-      console.log("Displaying cabinets:", cabinets);
+        const cabinets = await fetchCabinets();
+        if (cabinets) {
+          displayCabinets(cabinets);
+          drawWillayaLines(cabinets);
+        }
 
-      markers.forEach(marker => marker.setMap(null));
-      markers = [];
-      clearPolylines(); // Clear the polylines before drawing new ones
+        document
+          .getElementById("willayaSelect")
+          .addEventListener("change", filterCabinets);
+        document
+          .getElementById("moughataaSelect")
+          .addEventListener("change", filterCabinets);
+        document
+          .getElementById("prevBtn")
+          .addEventListener("click", showPreviousPage);
+        document
+          .getElementById("nextBtn")
+          .addEventListener("click", showNextPage);
+      }
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
+      function drawWillayaLines(cabinets) {
+        clearPolylines();
+        const willayaGroups = cabinets.reduce((acc, cabinet) => {
+          if (!acc[cabinet.willaya]) {
+            acc[cabinet.willaya] = [];
+          }
+          acc[cabinet.willaya].push(cabinet);
+          return acc;
+        }, {});
 
-            const cabinetDistances = cabinets.map(cabinet => {
-              const distance = getDistanceFromLatLonInKm(
-                userLat,
-                userLng,
-                cabinet.latitude,
-                cabinet.longitude
+        const colors = {
+          "Nouakchott-Nord": "#FF0000",
+          "Nouakchott-Ouest": "#00FF00",
+          "Nouakchott-Sud": "#0000FF",
+        };
+
+        Object.keys(willayaGroups).forEach((willaya) => {
+          const lineCoordinates = willayaGroups[willaya].map((cabinet) => ({
+            lat: cabinet.latitude,
+            lng: cabinet.longitude,
+          }));
+          const polyline = new google.maps.Polyline({
+            path: lineCoordinates,
+            geodesic: true,
+            strokeColor: colors[willaya],
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+          });
+          polyline.setMap(map);
+          polylines.push(polyline);
+        });
+      }
+
+      function clearPolylines() {
+        polylines.forEach((polyline) => polyline.setMap(null));
+        polylines = [];
+      }
+
+      function displayCabinets(cabinets) {
+        console.log("Displaying cabinets:", cabinets);
+
+        markers.forEach((marker) => marker.setMap(null));
+        markers = [];
+        clearPolylines(); // Clear the polylines before drawing new ones
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+
+              const cabinetDistances = cabinets.map((cabinet) => {
+                const distance = getDistanceFromLatLonInKm(
+                  userLat,
+                  userLng,
+                  cabinet.latitude,
+                  cabinet.longitude
+                );
+                return { ...cabinet, distance };
+              });
+
+              cabinetDistances.sort((a, b) => a.distance - b.distance);
+
+              const cabinetList = document.getElementById("cabinetList");
+              cabinetList.innerHTML = "";
+
+              const paginatedCabinets = paginate(
+                cabinetDistances,
+                currentPage,
+                cabinetsPerPage
               );
-              return { ...cabinet, distance };
-            });
 
-            cabinetDistances.sort((a, b) => a.distance - b.distance);
-
-            const cabinetList = document.getElementById('cabinetList');
-            cabinetList.innerHTML = '';
-
-            const paginatedCabinets = paginate(cabinetDistances, currentPage, cabinetsPerPage);
-
-            paginatedCabinets.forEach((cabinet, index) => {
-              const li = document.createElement('li');
-              li.classList.add('py-5', 'flex', 'items-start', 'justify-between');
-              li.innerHTML = `
+              paginatedCabinets.forEach((cabinet, index) => {
+                const li = document.createElement("li");
+                li.classList.add(
+                  "py-5",
+                  "flex",
+                  "items-start",
+                  "justify-between"
+                );
+                li.innerHTML = `
                 <div class="flex gap-3">
-                  <img src="../public/assets/Logos/paris.jpeg" class="flex-none w-16 h-16" />
+                  <img src="../public/assets/Logos/cabi.jpg" class="flex-none w-16 h-16" />
                   <div>
-                    <span class="block text-sm text-gray-700 font-semibold">${cabinet.nom}</span>
-                    <span class="block text-sm text-gray-600">${cabinet.distance.toFixed(2)} km</span>
-                    <span class="block text-sm text-gray-600"> ${cabinet.willaya}-${cabinet.moughataa}</span>
+                    <span class="block text-sm text-gray-700 font-semibold">${
+                      cabinet.nom
+                    }</span>
+                    <span class="block text-sm text-gray-600">${cabinet.distance.toFixed(
+                      2
+                    )} km</span>
+                    <span class="block text-sm text-gray-600"> ${
+                      cabinet.willaya
+                    }-${cabinet.moughataa}</span>
                   </div>
                 </div>
                 <a
-                   href="https://www.google.com/maps/dir/?api=1&destination=${cabinet.latitude},${cabinet.longitude}"
+                   href="https://www.google.com/maps/dir/?api=1&destination=${
+                     cabinet.latitude
+                   },${cabinet.longitude}"
                    target="_blank"
                   class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
                 >
@@ -220,110 +304,125 @@
                   </svg>
                   View in map
                 </a>`;
-              cabinetList.appendChild(li);
+                cabinetList.appendChild(li);
 
-              const marker = new google.maps.Marker({
-                position: { lat: cabinet.latitude, lng: cabinet.longitude },
-                map: map,
-                title: cabinet.nom
-              });
+                const marker = new google.maps.Marker({
+                  position: { lat: cabinet.latitude, lng: cabinet.longitude },
+                  map: map,
+                  title: cabinet.nom,
+                });
 
-              const infoWindow = new google.maps.InfoWindow({
-                content: `
+                const infoWindow = new google.maps.InfoWindow({
+                  content: `
                   <div>
                     <h2>${cabinet.nom}</h2>
                     <p>Willaya: ${cabinet.willaya}</p>
                     <p>Moughataa: ${cabinet.moughataa}</p>
                    <a href="https://www.google.com/maps/dir/?api=1&destination=${cabinet.latitude},${cabinet.longitude}" target="_blank">View in Maps</a>
                   </div>
-                `
+                `,
+                });
+
+                marker.addListener("click", () => {
+                  infoWindow.open(map, marker);
+                });
+
+                markers.push(marker);
               });
 
-              marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-              });
-
-              markers.push(marker);
-            });
-
-            updatePaginationButtons(cabinetDistances.length);
-            drawWillayaLines(paginatedCabinets);
-          },
-          error => {
-            console.error('Error getting user location:', error);
-          }
-        );
-      } else {
-        console.error('Geolocation is not supported by this browser.');
+              updatePaginationButtons(cabinetDistances.length);
+              drawWillayaLines(paginatedCabinets);
+            },
+            (error) => {
+              console.error("Error getting user location:", error);
+            }
+          );
+        } else {
+          console.error("Geolocation is not supported by this browser.");
+        }
       }
-    }
 
-    function paginate(items, currentPage, itemsPerPage) {
-      const start = (currentPage - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-      return items.slice(start, end);
-    }
+      function paginate(items, currentPage, itemsPerPage) {
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        return items.slice(start, end);
+      }
 
-    function updatePaginationButtons(totalItems) {
-      const totalPages = Math.ceil(totalItems / cabinetsPerPage);
-      const pageCounter = document.getElementById('pageCounter');
-      pageCounter.textContent = `${currentPage}/${totalPages}`;
-      document.getElementById('prevBtn').disabled = currentPage === 1;
-      document.getElementById('nextBtn').disabled = currentPage === totalPages;
-    }
+      function updatePaginationButtons(totalItems) {
+        const totalPages = Math.ceil(totalItems / cabinetsPerPage);
+        const pageCounter = document.getElementById("pageCounter");
+        pageCounter.innerHTML = `
+            Affichage de 
+            <span class="font-semibold text-gray-900">1</span>
+            à
+            <span class="font-semibold text-gray-900 ">10</span>
+            sur
+            <span class="font-semibold text-gray-900">${totalPages}</span>
+            Entrées`;
+        document.getElementById("prevBtn").disabled = currentPage === 1;
+        document.getElementById("nextBtn").disabled =
+          currentPage === totalPages;
+      }
 
-    function showPreviousPage() {
-      if (currentPage > 1) {
-        currentPage--;
+      function showPreviousPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          filterCabinets();
+        }
+      }
+
+      function showNextPage() {
+        currentPage++;
         filterCabinets();
       }
-    }
 
-    function showNextPage() {
-      currentPage++;
-      filterCabinets();
-    }
+      function filterCabinets() {
+        const willaya = document.getElementById("willayaSelect").value;
+        const moughataa = document.getElementById("moughataaSelect").value;
 
-    function filterCabinets() {
-      const willaya = document.getElementById('willayaSelect').value;
-      const moughataa = document.getElementById('moughataaSelect').value;
+        const filteredCabinets = cabinets.filter((cabinet) => {
+          return (
+            (willaya === "Choisissez une willaya" ||
+              cabinet.willaya === willaya) &&
+            (moughataa === "Choisissez une moughataa" ||
+              cabinet.moughataa === moughataa)
+          );
+        });
 
-      const filteredCabinets = cabinets.filter(cabinet => {
-        return (willaya === 'Choisissez une willaya' || cabinet.willaya === willaya) &&
-               (moughataa === 'Choisissez une moughataa' || cabinet.moughataa === moughataa);
-      });
-
-      displayCabinets(filteredCabinets);
-    }
-
-    function getDirections(lat, lng) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
-            const request = {
-              origin: { lat: userLat, lng: userLng },
-              destination: { lat: lat, lng: lng },
-              travelMode: google.maps.TravelMode.DRIVING
-            };
-            directionsService.route(request, (result, status) => {
-              if (status == google.maps.DirectionsStatus.OK) {
-                directionsRenderer.setDirections(result);
-                map.setZoom(15);
-              } else {
-                console.error('Directions request failed due to ' + status);
-              }
-            });
-          },
-          error => {
-            console.error('Error getting user location:', error);
-          }
-        );
+        displayCabinets(filteredCabinets);
       }
-    }
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7iU-ErVpTKuucu5uUi59Nqp0w7WNO4eA&libraries=places&callback=initMap"></script>
-</body>
-</html>
 
+      function getDirections(lat, lng) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+              const request = {
+                origin: { lat: userLat, lng: userLng },
+                destination: { lat: lat, lng: lng },
+                travelMode: google.maps.TravelMode.DRIVING,
+              };
+              directionsService.route(request, (result, status) => {
+                if (status == google.maps.DirectionsStatus.OK) {
+                  directionsRenderer.setDirections(result);
+                  map.setZoom(15);
+                } else {
+                  console.error("Directions request failed due to " + status);
+                }
+              });
+            },
+            (error) => {
+              console.error("Error getting user location:", error);
+            }
+          );
+        }
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7iU-ErVpTKuucu5uUi59Nqp0w7WNO4eA&libraries=places&callback=initMap"
+    ></script>
+  </body>
+</html>

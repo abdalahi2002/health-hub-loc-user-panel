@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events</title>
+    <link href="../public/css/tailwind-output.css" rel="stylesheet" />
+  </head>
+  <body class="container mx-auto p-3">
+    <div class="p-4"><%- include('../components/navbar'); %></div>
+    <div
+      class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-3"
+    >
+      <div class="md:flex">
+        <div class="md:flex-shrink-0">
+          <img
+            class="h-48 w-full object-cover md:w-48"
+            src="https://randomuser.me/api/portraits/men/75.jpg"
+            alt="Doctor's image"
+          />
+        </div>
+        <div class="p-8">
+          <div
+            class="uppercase tracking-wide text-sm text-indigo-500 font-semibold"
+          >
+            Dr. John Doe
+          </div>
+          <p class="block mt-1 text-lg leading-tight font-medium text-black">
+            Specialty: Cardiology
+          </p>
+          <p class="mt-2 text-gray-500">Available Time Slots:</p>
+          <ul class="list-disc list-inside flex gap-3">
+            <li>10:00 - 11:00</li>
+            <li>13:00 - 14:00</li>
+            <li>16:00 - 17:00</li>
+          </ul>
+          <button
+            class="mt-5 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Book Appointment
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
