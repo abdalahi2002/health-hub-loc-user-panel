@@ -3,44 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Events</title>
+    <title>Liste des Docteurs</title>
     <link href="../public/css/tailwind-output.css" rel="stylesheet" />
   </head>
   <body class="container mx-auto p-3">
     <div class="p-4"><%- include('../components/navbar'); %></div>
-    <div
-      class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-3"
-    >
-      <div class="md:flex">
-        <div class="md:flex-shrink-0">
-          <img
-            class="h-48 w-full object-cover md:w-48"
-            src="https://randomuser.me/api/portraits/men/75.jpg"
-            alt="Doctor's image"
-          />
-        </div>
-        <div class="p-8">
-          <div
-            class="uppercase tracking-wide text-sm text-indigo-500 font-semibold"
-          >
-            Dr. John Doe
-          </div>
-          <p class="block mt-1 text-lg leading-tight font-medium text-black">
-            Specialty: Cardiology
+
+    <div class="max-w-2xl mx-auto px-4">
+      <div class="items-start justify-between sm:flex">
+        <div class="w-[70%]">
+          <h4 class="text-gray-800 text-xl font-semibold">
+            Liste des Docteurs
+          </h4>
+          <p class="mt-2 text-gray-600 text-base sm:text-sm">
+            Sélectionnez une spécialité pour filtrer les docteurs
           </p>
-          <p class="mt-2 text-gray-500">Available Time Slots:</p>
-          <ul class="list-disc list-inside flex gap-3">
-            <li>10:00 - 11:00</li>
-            <li>13:00 - 14:00</li>
-            <li>16:00 - 17:00</li>
-          </ul>
-          <button
-            class="mt-5 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        </div>
+        <div class="w-[30%]">
+          <select
+            id="specialitySelect"
+            class="bg-gray-50 border border-[#47C3A4] text-gray-900 text-sm rounded-lg focus:ring-[#47C3A4] focus:border-[#47C3A4] block w-full p-2.5"
           >
-            Book Appointment
-          </button>
+            <option value="" selected>Choisissez une spécialité</option>
+            <option value="gynécologue">gynécologue</option>
+            <option value="General Practitioner">General Practitioner</option>
+            <!-- Ajoutez plus de spécialités selon vos besoins -->
+          </select>
         </div>
       </div>
+      <ul id="doctorList" class="mt-12 divide-y">
+        <!-- Les docteurs seront insérés ici -->
+      </ul>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const specialitySelect = document.getElementById("specialitySelect");
+        const doctorList = document.getElementById("doctorList");
+
+        function fetchDoctors(speciality = "") {
+          fetch("http://localhost:8080/api/health/doctors")
+            .then((response) => response.json())
+            .then((data) => {
+              doctorList.innerHTML = ""; // Clear any existing content
+              data
+                .filter(
+                  (doctor) => !speciality || doctor.speciality === speciality
+                )
+                .forEach((doctor) => {
+                  const listItem = document.createElement("li");
+                  listItem.className = "py-5 flex items-start justify-between";
+                  listItem.innerHTML = `
+                    <div class="flex gap-3">
+                      <img src="../public/assets/Logos/doc.png" class="flex-none w-16 h-16" />
+                      <div>
+                        <span class="block text-sm text-gray-700 font-semibold">${doctor.name}</span>
+                        <span class="block text-sm text-gray-600">${doctor.speciality}</span>
+                        <span class="block text-sm text-gray-600">${doctor.cabinet.nom}</span>
+                      </div>
+                    </div>
+                    <a
+                      href="https://www.google.com/maps/dir/?api=1&destination=${doctor.cabinet.latitude},${doctor.cabinet.longitude}"
+                      target="_blank"
+                      class="text-gray-700 text-sm border border-[#47C3A4] rounded-lg px-3 py-2 duration-150 bg-white hover:bg-[#47C3A4] flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 4" />
+                      </svg>
+                      Voir les détails
+                    </a>
+                  `;
+                  doctorList.appendChild(listItem);
+                });
+            })
+            .catch((error) => console.error("Error fetching doctors:", error));
+        }
+
+        specialitySelect.addEventListener("change", function () {
+          const selectedSpeciality = this.value;
+          fetchDoctors(selectedSpeciality);
+        });
+
+        // Fetch all doctors on initial load
+        fetchDoctors();
+      });
+    </script>
   </body>
 </html>

@@ -35,6 +35,18 @@ router.get("/pharmacie", (req, res) => {
   }
 });
 
+router.get("/docteur", (req, res) => {
+  try {
+    // Read components
+  
+
+    res.render("docteur", { title: "docteur" });
+  } catch (error) {
+    console.error("Error reading components:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/cabinet", (req, res) => {
   try {
     // Read components

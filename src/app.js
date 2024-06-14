@@ -45,6 +45,17 @@ app.get("/pharmacie", (req, res) => {
   });
 });
 
+app.get("/docteur", (req, res) => {
+  // Read the content of the navbar
+  const navbarContent = readComponent("navbar.ejs");
+
+  // Render the pharmacie page with navbar content
+  res.render("docteur", {
+    title: "docteur",
+    navbar: navbarContent,
+  });
+});
+
 app.get("/cabinet", (req, res) => {
   // Read the content of the navbar
   const navbarContent = readComponent("navbar.ejs");
