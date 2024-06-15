@@ -16,22 +16,12 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Helper function to read component files
 const readComponent = (filePath) => {
-  return fs.readFileSync(
-    path.join(__dirname, "components", filePath),
-    "utf8"
-  );
+  return fs.readFileSync(path.join(__dirname, "components", filePath), "utf8");
 };
 
 // Route for the home page
 app.get("/", (req, res) => {
-  // Read the content of the navbar
-  const navbarContent = readComponent("navbar.ejs");
-
-  // Render the index page with navbar content
-  res.render("index", {
-    title: "Home",
-    navbar: navbarContent,
-  });
+  res.redirect("/pharmacie");
 });
 
 // Route for the pharmacie page
@@ -57,14 +47,15 @@ app.get("/docteur", (req, res) => {
   });
 });
 
-app.get('/docteurdetails/:id', (req, res) => {
+app.get("/docteurdetails/:id", (req, res) => {
   // Read the content of the navbar
   const navbarContent = readComponent("navbar.ejs");
   const doctorId = req.params.id;
-  res.render('docteurdetails', { 
+  res.render("docteurdetails", {
     title: "docteurdetails",
     navbar: navbarContent,
-    doctorId: doctorId });
+    doctorId: doctorId,
+  });
 });
 
 app.get("/cabinet", (req, res) => {
@@ -77,8 +68,6 @@ app.get("/cabinet", (req, res) => {
     navbar: navbarContent,
   });
 });
-
-
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
